@@ -1,26 +1,27 @@
 import {createStore} from 'vuex'
+import modalAndSignUpModule from './modules/modal';
+import products from './modules/products.js'
+import auth from './modules/auth.js'
 
-export default createStore({
+
+
+// const productModule = {
+//     state(){
+//         return {
+//             test:"hey"
+//         }
+//     }
+// }
+
+const store = createStore({
+    modules:{
+        modalAndSignUpModule,
+        products,
+        auth
+    },
     state:{
-        signUpModal: false
-    },
-    getters:{
-        getSignUpModal(state){
-            return state.signUpModal
-        }
-    },
-    actions:{
-        openSignUpModal(context){
-            context.commit('openSignUpModal')
-        },
-        
-    },
-    mutations:{
-        openSignUpModal(state){
-            state.signUpModal = true
-        },
-        closeSignUpModal(state){
-            state.signUpModal = false
-        }
+        name:'Bran'
     }
-})
+});
+
+export default store

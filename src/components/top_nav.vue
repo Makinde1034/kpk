@@ -2,7 +2,8 @@
   <div>
       <nav class="nav">
           <div class="nav__hello">
-              <p>hello@kpk.com</p>
+              <p v-if="loggedIn">{{name.first_name}}</p>
+              <p v-else>hello@kpk.com</p>
               <p>Vendor</p>
               <p>Riders</p>
           </div>
@@ -17,7 +18,23 @@
 
 <script>
 export default {
-
+    data(){
+        return {
+            // name : ''
+        }
+    },
+    computed:{
+        loggedIn(){
+           return this.$store.getters.token
+        },
+        user(){
+            return this.$store.getters.user
+            
+        },
+        name(){
+            return JSON.parse(localStorage.getItem('user'))
+        }
+    }
 }
 </script>
 

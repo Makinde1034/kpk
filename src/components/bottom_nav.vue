@@ -8,14 +8,15 @@
 
           <div class="nav__search">
              <form action="">
-                 <input placeholder="search products, brands and categories" type="text">
-                 <button>
-                     <img src="../assets/search.fd966c61.svg" alt="serach">
-                 </button>
+                <input placeholder="search products, brands and categories" type="text">
+                <button>
+                    <img src="../assets/search.fd966c61.svg" alt="serach">
+                </button>
              </form>
           </div>
-          <p class="login">Login</p>
-          <p @click="openSignUpModal" class="login">Signup</p>
+          <p v-if="loggedIn" class="logout">logout</p>
+          <p v-else class="login">Login</p>
+          <p v-if="!loggedIn" @click="openSignUpModal" class="login">Signup</p>
 
           <div class="nav__cart">
             <p>Cart</p>
@@ -29,13 +30,18 @@
 </template>
 
 <script>
-import store from '../store/index.js'
+// import store from '../store/index.js'
 
 export default {
     methods:{
         openSignUpModal(){
-            store.dispatch('openSignUpModal')
+            this.$store.dispatch('openSignUpModal')
        
+        }
+    },
+    computed:{
+        loggedIn(){
+            return this.$store.getters.token
         }
     }
 }
@@ -79,6 +85,10 @@ export default {
 }
 
 .login{
+    cursor: pointer;
+}
+
+.logout{
     cursor: pointer;
 }
 

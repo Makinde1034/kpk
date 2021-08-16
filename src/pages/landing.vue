@@ -23,31 +23,32 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Loader from '../components/loader.vue'
-
 import SignUp from '../components/sign_up.vue'
 
 export default {
   components:{Loader, SignUp},
   data(){
       return{
-      products:[],
-      loading: true
+
     }
   },
+  
   methods:{
-    getProduts(){
-      axios.get('https://kpk-ecommerce.herokuapp.com/product/get-all-product').then((res)=>{
-        this.loading = false
-        this.products = res.data.data
-        console.log(res.data.data);
-          
-      });
+    
+  },
+
+  computed:{
+    products(){
+      return this.$store.getters.products
+    },
+    loading(){
+      return this.$store.getters.productLoading
     }
   },
+
   created(){
-    this.getProduts();
+    this.$store.dispatch('getProducts');
   }
     
 }

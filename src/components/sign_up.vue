@@ -1,9 +1,11 @@
 <template>
   <div>
-      <form @submit.prevent="signUpUser" :class="signUpModal ? ['signUpForm__active','signUpForm']  : 'signUpForm' ">
+      <form @submit.prevent="signUp" :class="signUpModal ? ['signUpForm__active','signUpForm']  : 'signUpForm' ">
+        <nav class="nav">
+            <p @click="closeSignUpModal" >cancel</p>
+        </nav>
         <div class="header">
             <h2>Sign up </h2>  
-            <p @click="closeSignUpModal" >cancel</p>
         </div>
         <p>{{err}}</p>
         <div class="box">
@@ -26,7 +28,7 @@
         <div class="submit">
             <button>
                 <p v-if="loading===false" >Submit</p>
-                <div v-if="loading===true"  class="loader"></div>
+                <div v-if="loading === true"  class="loader"></div>
             </button>
         </div>
       </form>
@@ -34,8 +36,7 @@
 </template>
 
 <script>
-import store from '../store/index'
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
     data(){
@@ -53,14 +54,13 @@ export default {
                 password:"",
                 confirmPassword:""
             },
-            loading:false,
             err:""
         }
     },
     methods:{
-        async signUpUser(){
-            this.loading = true
-            await axios.post('https://kpk-ecommerce.herokuapp.com/user/signup-customer',{
+       
+        signUp(){
+            const user = {
                 first_name:this.userDetails.firstname,
                 last_name:this.userDetails.lastname,
                 email:this.userDetails.email,
@@ -70,27 +70,27 @@ export default {
                     state: this.userDetails.address.state
                 },
                 phone_number:this.userDetails.phone,
-                password:this.userDetails.password
-            }).then((res)=>{
-                console.log(res);
-                this.loading = false
-                const {data:{data}} = res
-                console.log(data.token)
-            }).catch((err)=>{
-                this.loading = false
-                console.log(err.msg)
-                this.err = err
+                password:this.userDetails.password,
+               
+
+            }
+            this.$store.dispatch('signUp',user).then((res)=>{
+                console.log(res)
+                this.closeSignUpModal()
             })
-            
-            
+            // console.log(user)
         },
+
         closeSignUpModal(){
-            store.commit("closeSignUpModal")
+            this.$store.commit("closeSignUpModal")
         }
     },
     computed:{
         signUpModal(){
-            return store.getters.getSignUpModal
+            return this.$store.getters.getSignUpModal
+        },
+        loading(){
+            return this.$store.getters.loading
         }
     }
 }
@@ -115,6 +115,15 @@ export default {
     z-index: 2;
 }
 
+.nav{
+    width: 100%;
+}
+
+.nav p{
+    float: right;
+    font-weight: 700;
+    cursor: pointer;
+}
 
 .signUpForm__active{
     visibility:visible;
