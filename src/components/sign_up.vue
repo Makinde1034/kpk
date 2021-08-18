@@ -28,8 +28,11 @@
         <div class="submit">
             <button>
                 <p v-if="loading===false" >Submit</p>
-                <div v-if="loading === true"  class="loader"></div>
+                <div v-else  class="loader"></div>
             </button>
+        </div>
+        <div class="error">
+            <p v-if="getStatus==='error' ">An error occured</p>
         </div>
       </form>
   </div>
@@ -74,24 +77,25 @@ export default {
                
 
             }
-            this.$store.dispatch('signUp',user).then((res)=>{
-                console.log(res)
-                this.closeSignUpModal()
-            })
+            this.$store.dispatch('auth/signUp',user)
             // console.log(user)
         },
 
         closeSignUpModal(){
-            this.$store.commit("closeSignUpModal")
+            this.$store.dispatch("modalAndSignUpModule/closeSignUpModal")
         }
     },
     computed:{
         signUpModal(){
-            return this.$store.getters.getSignUpModal
+            return this.$store.getters['modalAndSignUpModule/getSignUpModal']
         },
         loading(){
-            return this.$store.getters.loading
+            return this.$store.getters['auth/loading']
+        },
+        getStatus(){
+            return this.$store.getters['auth/status']
         }
+        
     }
 }
 </script>
@@ -211,6 +215,11 @@ export default {
     border: 3px solid #102A55;
     border-top: 3px solid white;
     animation: load 0.5s linear infinite;
+}
+
+.error{
+    display: flex;
+    justify-content: center;
 }
 
 @keyframes load {

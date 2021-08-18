@@ -14,8 +14,8 @@
                 </button>
              </form>
           </div>
-          <p v-if="loggedIn" class="logout">logout</p>
-          <p v-else class="login">Login</p>
+          <p @click="logOut" v-if="loggedIn" class="logout">logout</p>
+          <p @click="openSignInModal" v-else class="login">Login</p>
           <p v-if="!loggedIn" @click="openSignUpModal" class="login">Signup</p>
 
           <div class="nav__cart">
@@ -35,13 +35,19 @@
 export default {
     methods:{
         openSignUpModal(){
-            this.$store.dispatch('openSignUpModal')
+            this.$store.dispatch('modalAndSignUpModule/openSignUpModal')
        
+        },
+        openSignInModal(){
+            this.$store.dispatch('modalAndSignUpModule/openSignInModal')
+        },
+        logOut(){
+            this.$store.dispatch('auth/logOut')
         }
     },
     computed:{
         loggedIn(){
-            return this.$store.getters.token
+            return this.$store.getters['auth/token']
         }
     }
 }

@@ -25,10 +25,10 @@ export default {
     },
     computed:{
         loggedIn(){
-           return this.$store.getters.token
+           return this.$store.getters['auth/token']
         },
         user(){
-            return this.$store.getters.user
+            return this.$store.getters['auth/user']
             
         },
         name(){

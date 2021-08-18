@@ -8,12 +8,12 @@
 import store from '../store/index.js'
 
 export default {
-    computed:{
-        signUpModal(){
-            return store.getters.getSignUpModal
-            
-        }
+  computed:{
+    signUpModal(){
+      return store.getters['modalAndSignUpModule/getModalBackground']
+        
     }
+  }
 }
 </script>
 

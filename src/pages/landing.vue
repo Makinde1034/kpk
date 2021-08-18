@@ -18,6 +18,7 @@
       </div>
     </div>
     <SignUp />
+    <SignIn />
   </div>
   
 </template>
@@ -25,9 +26,10 @@
 <script>
 import Loader from '../components/loader.vue'
 import SignUp from '../components/sign_up.vue'
+import SignIn from '../components/sign_in.vue'
 
 export default {
-  components:{Loader, SignUp},
+  components:{Loader, SignUp,SignIn},
   data(){
       return{
 
@@ -40,15 +42,15 @@ export default {
 
   computed:{
     products(){
-      return this.$store.getters.products
+      return this.$store.getters['products/products']
     },
     loading(){
-      return this.$store.getters.productLoading
+      return this.$store.getters['products/productLoading']
     }
   },
 
   created(){
-    this.$store.dispatch('getProducts');
+    this.$store.dispatch('products/getProducts');
   }
     
 }

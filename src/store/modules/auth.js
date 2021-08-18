@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const auth = {
+    namespaced : true,
     state(){
         return{
             status: '',
@@ -24,7 +25,7 @@ const auth = {
         }
     },
     actions:{
-        async signUp({commit},user){
+        async signUp({commit,dispatch},user){
             commit('authRequest')
             axios({url : 'https://kpk-ecommerce.herokuapp.com/user/signup-customer', data: user, method:'POST'}).then((res)=>{
                 const {data:{data}} = res
@@ -32,15 +33,21 @@ const auth = {
                 const token = data.token
                 localStorage.setItem('token',token);
                 localStorage.setItem('user',JSON.stringify(user));
-                commit('authSuccess',user,token)
+                commit('authSuccess',token)
+                dispatch('modalAndSignUpModule/closeSignUpModal',null,{ root: true }) 
                 console.log(data)
-                this.$store.commit("closeSignUpModal")
-            }).catch((err)=>{
-                commit('authError',err)
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-
+            }).catch(err =>{
+                commit('authError');
+                console.log(err)
             })
+        },
+        logOut(){
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            
+        },
+        logIn(){
+            
         }
     },
     mutations:{
@@ -48,15 +55,13 @@ const auth = {
             state.status = 'loading'
             state.loading = true
         },
-        authSuccess(state,token,user){
+        authSuccess(state,token){
             state.token = token
-            state.user = user
             state.status = 'success'
-            state.name = user.firstname
             state.loading =false
         },
         authError(state){
-            state.loading = 'error'
+            state.status = 'error'
             state.loading = false
         }
     }
