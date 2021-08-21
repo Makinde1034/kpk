@@ -82,12 +82,12 @@ export default {
         },
 
         closeSignUpModal(){
-            this.$store.dispatch("modalAndSignUpModule/closeSignUpModal")
+            this.$store.dispatch("modal/closeSignUpModal")
         }
     },
     computed:{
         signUpModal(){
-            return this.$store.getters['modalAndSignUpModule/getSignUpModal']
+            return this.$store.getters['modal/getSignUpModal']
         },
         loading(){
             return this.$store.getters['auth/loading']

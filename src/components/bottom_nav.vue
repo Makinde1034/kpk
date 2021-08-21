@@ -22,7 +22,7 @@
             <p>Cart</p>
             <div class="cart__counter">
                 <img src="../assets/trolley.d9c304ca.svg" alt="">
-                <div class="circle">0</div>
+                <div class="circle">{{cartItems.length}}</div>
             </div>
           </div>
       </nav>
@@ -32,23 +32,32 @@
 <script>
 // import store from '../store/index.js'
 
+
 export default {
+    
     methods:{
+        
         openSignUpModal(){
-            this.$store.dispatch('modalAndSignUpModule/openSignUpModal')
+            this.$store.dispatch('modal/openSignUpModal');
        
         },
         openSignInModal(){
-            this.$store.dispatch('modalAndSignUpModule/openSignInModal')
+            this.$store.dispatch('modal/openSignInModal');
         },
         logOut(){
-            this.$store.dispatch('auth/logOut')
+            this.$store.dispatch('auth/logOut');
+            
         }
     },
     computed:{
         loggedIn(){
             return this.$store.getters['auth/token']
+        },
+        
+        cartItems(){
+            return this.$store.getters['cart/getCart']
         }
+    
     }
 }
 </script>

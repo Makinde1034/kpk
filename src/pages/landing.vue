@@ -12,13 +12,15 @@
           <p class="itemBox__desc">{{item.description.length > 35 ? item.description.substring(0,35) + '...' : item.description}}</p>
           <h3>${{item.price}}</h3>
           <div class="itemBox__button">
-            <button>ADD TO CART</button>
+            <button @click="addToCart(item.id)" >ADD TO CART</button>
           </div>
         </div>
       </div>
     </div>
     <SignUp />
     <SignIn />
+    <Cart />
+    <Toast />
   </div>
   
 </template>
@@ -27,9 +29,13 @@
 import Loader from '../components/loader.vue'
 import SignUp from '../components/sign_up.vue'
 import SignIn from '../components/sign_in.vue'
+import Toast from '../components/toast.vue'
+// import axios from 'axios'
+import storage from '../utils/storage.js'
+import Cart from '../components/cart.vue'
 
 export default {
-  components:{Loader, SignUp,SignIn},
+  components:{Loader, SignUp,SignIn,Cart,Toast},
   data(){
       return{
 
@@ -37,6 +43,24 @@ export default {
   },
   
   methods:{
+    getCustomerHeader() {
+      let header = {
+      Authorization: "bearer " + storage.getToken()
+      };
+      return header;
+    },
+    addToCart(id){
+      const payload = {
+        product_id : id
+      }
+      if(!storage.getUserDetails()){
+        alert('you have to be logged in to add products to cart');
+      }
+      else{
+        this.$store.dispatch('cart/addToCart',payload);
+      }
+     
+    }
     
   },
 
@@ -56,7 +80,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .landing{
   padding-left: 150px;

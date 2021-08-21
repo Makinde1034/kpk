@@ -1,14 +1,17 @@
 import {createStore} from 'vuex'
-import modalAndSignUpModule from './modules/modal';
-import products from './modules/products.js'
-import auth from './modules/auth.js'
+import auth from './auth'
+import modal from './modal'
+import products from './products'
+import cart from './cart'
+
 
 
 const store = createStore({
     modules:{
-        modalAndSignUpModule,
+        auth,
+        modal,
         products,
-        auth
+        cart
     },
     
 });

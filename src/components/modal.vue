@@ -10,7 +10,7 @@ import store from '../store/index.js'
 export default {
   computed:{
     signUpModal(){
-      return store.getters['modalAndSignUpModule/getModalBackground']
+      return store.getters['modal/getModalBackground']
         
     }
   }

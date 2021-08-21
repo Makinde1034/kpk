@@ -2,7 +2,7 @@
   <div>
       <nav class="nav">
           <div class="nav__hello">
-              <p v-if="loggedIn">{{name.first_name}}</p>
+              <p v-if="loggedIn">{{user}}</p>
               <p v-else>hello@kpk.com</p>
               <p>Vendor</p>
               <p>Riders</p>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+
 export default {
     data(){
         return {
@@ -31,9 +32,7 @@ export default {
             return this.$store.getters['auth/user']
             
         },
-        name(){
-            return JSON.parse(localStorage.getItem('user'))
-        }
+        
     }
 }
 </script>

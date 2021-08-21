@@ -1,15 +1,21 @@
 <template>
   <div>
-      <form :class="signInModal ? ['signInForm__active','signInForm']  : 'signInForm' " >
+      <form @submit.prevent="signIn" :class="signInModal ? ['signInForm__active','signInForm']  : 'signInForm' " >
         <nav class="nav">
             <p @click="closeSignInModal" >cancel</p>
         </nav>
         <div class="header">
             <h2>Sign in </h2>  
         </div>
-        <input placeholder="Email" type="text">
-        <input placeholder="password" type="text">
-        <button>Submit</button>
+        <input v-model="userDetails.email" placeholder="Email" required type="text">
+        <input v-model="userDetails.password" placeholder="password" required type="text">
+        <button>
+            <p v-if="loading===false">Submit</p>
+            <div v-else class="loader"></div>
+        </button>
+        <div class="error">
+            <p v-if="getStatus==='error' ">An error occured</p>
+        </div>
       </form>
   </div>
 </template>
@@ -21,32 +27,40 @@ export default {
     data(){
         return {
             userDetails:{
-                firstname : '',
-                lastname : '',
                 email : '',
-                address:{
-                    street:'',
-                    lga:'',
-                    state:'',
-                },
-                phone : '',
                 password:"",
-                confirmPassword:""
+            
             },
-            err:""
+         
         }
     },
     methods:{
-       
+        signIn(){
+            const user = {
+                email:this.userDetails.email,
+                password:this.userDetails.password,
+               
+
+            }
+            this.$store.dispatch('auth/signIn',user)
+            // console.log(user)
+        },
+
         closeSignInModal(){
-            this.$store.dispatch("modalAndSignUpModule/closeSignInModal")
+            this.$store.dispatch("modal/closeSignInModal")
         }
        
     },
     computed:{
         signInModal(){
-            return this.$store.getters['modalAndSignUpModule/getSignInModal']
+            return this.$store.getters['modal/getSignInModal']
         },
+        loading(){
+            return this.$store.getters['auth/signInLoading']
+        },
+        getStatus(){
+            return this.$store.getters['auth/status']
+        }
         
     }
 }
@@ -61,7 +75,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 40%;
+    width: 30%;
     background: white;
     padding: 20px;
     border-radius: 5px;

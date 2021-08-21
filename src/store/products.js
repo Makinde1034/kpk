@@ -1,4 +1,6 @@
-import axios from 'axios'
+import api from '../utils/api.js'
+
+
 
 const products = {
     namespaced : true,
@@ -18,9 +20,9 @@ const products = {
     },
     actions:{
         async getProducts({commit}){
-            axios.get('https://kpk-ecommerce.herokuapp.com/product/get-all-product').then((res)=>{
+            api.getProducts().then((res)=>{
                 commit('setProducts',res.data.data)
-                console.log(res.data.data);
+                // console.log(res.data.data);
           
             });
         }
