@@ -24,7 +24,7 @@ export default {
     },
 
     signIn(user){
-        return  axios({url: `${USER_URL}/login`,data:user, method:"POST"})
+        return  axios({url: `${USER_URL}/login`,data:user, method:"POST"});
     },
 
     addToCart(payload){
@@ -43,5 +43,11 @@ export default {
         return axios.post(`${CART_URL}/delete-from-cart`,payload,{
             headers:this.getCustomerHeader()
         });
+    },
+
+    removeFromCart(payload){
+        return axios.post(`${CART_URL}/remove-from-cart`,payload,{
+            headers:this.getCustomerHeader()
+        })
     }
 }

@@ -54,7 +54,7 @@ export default {
         product_id : id
       }
       if(!storage.getUserDetails()){
-        alert('you have to be logged in to add products to cart');
+        this.$toast.show(`you have to be logged in to add items to cart`);
       }
       else{
         this.$store.dispatch('cart/addToCart',payload);

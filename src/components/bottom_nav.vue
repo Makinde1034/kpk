@@ -18,9 +18,9 @@
           <p @click="openSignInModal" v-else class="login">Login</p>
           <p v-if="!loggedIn" @click="openSignUpModal" class="login">Signup</p>
 
-          <div class="nav__cart">
+          <div @click="openCart" class="nav__cart">
             <p>Cart</p>
-            <div class="cart__counter">
+            <div  class="cart__counter">
                 <img src="../assets/trolley.d9c304ca.svg" alt="">
                 <div class="circle">{{cartItems.length}}</div>
             </div>
@@ -30,7 +30,8 @@
 </template>
 
 <script>
-// import store from '../store/index.js'
+
+import storage from '../utils/storage.js'
 
 
 export default {
@@ -47,6 +48,14 @@ export default {
         logOut(){
             this.$store.dispatch('auth/logOut');
             
+        },
+        openCart(){
+            if(!storage.getUserDetails()){
+                this.$toast.show(`you have to be logged in to access cart`);
+            }else{
+                this.$store.dispatch('modal/openCartModal') 
+            }
+           
         }
     },
     computed:{
@@ -146,5 +155,35 @@ export default {
     justify-content: center;
    
 
+}
+
+
+@media screen and (max-width:768px) {
+    .nav{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .nav__search form{
+        display: none;
+    }
+
+    .login{
+        display: none;
+    }
+
+    .logout{
+        display: none;
+    }
+
+    .nav__cart{
+        width: 20px;
+        border: none;
+    }
+
+    .nav__cart p{
+        display: none;
+    }
+
+    
 }
 </style>

@@ -2,7 +2,7 @@
   <div>
       <form @submit.prevent="signIn" :class="signInModal ? ['signInForm__active','signInForm']  : 'signInForm' " >
         <nav class="nav">
-            <p @click="closeSignInModal" >cancel</p>
+            <img @click="closeSignInModal" src="../assets/cancel.png" alt="cancel">
         </nav>
         <div class="header">
             <h2>Sign in </h2>  
@@ -89,10 +89,10 @@ export default {
     width: 100%;
 }
 
-.nav p{
+.nav img{
     float: right;
-    font-weight: 700;
     cursor: pointer;
+    height: 20px;
 }
 
 .signInForm__active{

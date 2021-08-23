@@ -59,4 +59,10 @@ export default {
     margin-left: 5px;
 }
 
+@media screen and (max-width:768px) {
+    .nav{
+        display: none;
+    }
+}
+
 </style>

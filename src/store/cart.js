@@ -6,6 +6,7 @@ const cart = {
         return {
             cartItems : [],
             toast : false,
+            totalPrice : ''
            
         }
     },
@@ -15,6 +16,9 @@ const cart = {
         },
         getToast(state){
             return state.toast
+        },
+        getTotalPrice(state){
+            return state.totalPrice
         }
     },
     actions:{
@@ -25,18 +29,28 @@ const cart = {
             commit('showToast');
             dispatch('getCart')
            
+            }).catch(()=>{
+                alert('an error occured')
             })
         },
         getCart({commit}){
             api.getCart().then((res)=>{
                 const{data:{data}} = res
-                console.log(data.cart.items);
+                const totalPrice = data.cart.total_price
+                console.log(data.cart);
                 commit('setCart',data.cart.items);
+                commit('setTotalPrice',totalPrice)
             })
         },
         deleteFromCart({dispatch},payload){
             api.deleteFromCart(payload).then((res)=>{
                 console.log(res);
+                dispatch('getCart')
+            })
+        },
+        removeFromCart({dispatch},payload){
+            api.removeFromCart(payload).then((res)=>{
+                console.log(res)
                 dispatch('getCart')
             })
         }
@@ -52,6 +66,9 @@ const cart = {
                 state.toast = false
             },3000);
         },
+        setTotalPrice(state,payload){
+            state.totalPrice = payload
+        }
         
     }
 

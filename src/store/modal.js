@@ -5,6 +5,7 @@ const modalAndSignUpModule = {
         return {
            signUpModal: false,
            signInModal : false,
+           cartModal : false,
            modalBackground : false  
         }
     },
@@ -17,6 +18,9 @@ const modalAndSignUpModule = {
         },
         getModalBackground(state){
             return state.modalBackground
+        },
+        getCartModal(state){
+            return state.cartModal
         }
     },
     actions:{
@@ -38,6 +42,15 @@ const modalAndSignUpModule = {
             commit('closeSignInModal');
             commit('closeModalBackground');
         },
+        // cart 
+        openCartModal({commit}){
+            commit('openCartModal');
+            commit('openModalBackground');
+        },
+        closeCartModal({commit}){
+            commit('closeCartModal')
+            commit('closeModalBackground');
+        } 
         
     },
     mutations:{
@@ -60,6 +73,12 @@ const modalAndSignUpModule = {
         },
         closeModalBackground(state){
             state.modalBackground = false
+        },
+        openCartModal(state){
+            state.cartModal = true
+        },
+        closeCartModal(state){
+            state.cartModal = false
         }
     }
 }

@@ -1,6 +1,9 @@
 <template>
   <div>
-      <div class="cart_wrap">
+      <div :class=" isCartOpen ? ['cart__wrap','cart--active'] : 'cart__wrap' ">
+          <header class="header">
+              <img @click="closeModal" src="../assets/cancel.png" alt="">
+          </header>
           <section v-for="item in cartItems" :key="item.id" class="cart">
               <div class="image">
                   <img :src="item.image" alt="">
@@ -13,7 +16,7 @@
                     <p>Quantity</p>
                   </div>
                   <div class="quantity_right">
-                    <img  src="../assets/chevron-down.2c726049.svg" alt="down">
+                    <img @click="removeFromCart(item.id)" src="../assets/chevron-down.2c726049.svg" alt="down">
                     <p>{{item.quantity}}</p>
                     <img @click="addToCart(item.id)" src="../assets/chevron-up.2e2e05ba.svg" alt="up"> 
                   </div>
@@ -31,8 +34,11 @@
               </div>
           </section>
           <div class="summary">
-              <h4>Total quantity : </h4>
-              <h4>Total Amount : </h4>
+              <!-- <h4>Total quantity : </h4> -->
+              <h4>Total Amount : ${{totalPrice.toLocaleString()}} </h4>
+          </div>
+          <div class="checkout">
+              <button>Checkout</button>
           </div>
       </div>
   </div>
@@ -40,6 +46,7 @@
 
 <script>
 import storage from '../utils/storage.js'
+
 
 export default {
     data(){
@@ -64,11 +71,26 @@ export default {
             else{
                 this.$store.dispatch('cart/addToCart',payload);
             }
+        },
+        closeModal(){
+            this.$store.dispatch('modal/closeCartModal');
+        },
+        removeFromCart(id){
+            const payload = {
+                product_id : id
+            }
+            this.$store.dispatch('cart/removeFromCart',payload);
         }
     },
     computed:{
         cartItems(){
             return this.$store.getters['cart/getCart']
+        },
+        isCartOpen(){
+            return this.$store.getters['modal/getCartModal']
+        },
+        totalPrice(){
+            return this.$store.getters['cart/getTotalPrice']
         }
     },
     created(){
@@ -78,11 +100,20 @@ export default {
 </script>
 
 <style scoped>
-.cart_wrap{
+
+.header{
+    padding: 10px;
+}
+.header img{
+    height: 20px;
+    float: left;
+    cursor: pointer;
+}
+.cart__wrap{
     height: 500px;
     width: 70%;
     background: white;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
@@ -90,6 +121,13 @@ export default {
     z-index: 5;
     border-radius: 5px;
     visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.cart__wrap.cart--active{
+    visibility: visible;
+    opacity: 1;
 }
 
 .cart{
@@ -114,6 +152,7 @@ export default {
 
 .name p{
     font-weight: 600;
+    text-align: center;
 }
 
 .quantity_right{
@@ -141,5 +180,23 @@ export default {
     display: flex;
     align-items: flex-end;
     flex-direction: column;
+    padding: 10px;
+}
+
+.summary h4{
+    margin-bottom: 20px;
+}
+
+.checkout button{
+    width: 200px;
+    height: 40px;
+    background: rgb(122, 236, 122);
+    border: none;
+    float: right;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
 }
 </style>
