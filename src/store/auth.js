@@ -37,22 +37,21 @@ const auth = {
                 const {data:{data}} = res
                 const user = data.user
                 const token = data.token
-                localStorage.setItem('token',token);
+                Storage.setToken(token);
                 storage.setUserDetails(user)
                 commit('authSuccess',token)
                 dispatch('modal/closeSignUpModal',null,{ root: true });
-                dispatch('cart/getCart') 
                 console.log(data)
             }).catch(err =>{
                 commit('authError');
                 console.log(err)
             })
         },
-        logOut({commit}){
+        logOut({commit,dispatch}){
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             commit('logOut');
-            
+            dispatch('cart/getCart',null,{ root: true }) 
         },
     
         signIn({commit,dispatch},user){
@@ -65,6 +64,7 @@ const auth = {
                 storage.setToken(token)
                 storage.setUserDetails(user);
                 commit('authSuccess',token)
+                dispatch('cart/getCart',null,{ root: true }) 
                 dispatch('modal/closeSignInModal',null,{ root: true }); 
             }).catch((err)=>{
                 console.log(err)
